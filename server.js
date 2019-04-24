@@ -1,21 +1,15 @@
-// server.js
-// where your node app starts
-
-// init project
 const express = require('express');
+const proxy = require('http-proxy-middleware');
 const cors = require('cors');
-const axios = require('axios');
 const app = express();
 
 app.use(cors());
+app.use(
+  '*',
+  proxy({ target: 'https://registry.npmjs.org', changeOrigin: true })
+);
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get('*', async function(request, response) {
-  const res = await axios.get(`https://registry.npmjs.org${request.originalUrl}`)
-  response.json(res.data);
-});
 
-// listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
