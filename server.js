@@ -3,17 +3,16 @@
 
 // init project
 const express = require('express');
+const cors = require('cors');
+const axios = require('axios');
 const app = express();
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+app.use(cors());
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+app.get('*', async function(request, response) {
+  const res = await axios.get(`https://registry.npmjs.org${request.originalUrl}`)
+  response.json(res.data);
 });
 
 // listen for requests :)
