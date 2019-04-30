@@ -5,6 +5,10 @@ const app = express();
 
 app.use(cors());
 app.use(
+  '/search/*',
+  proxy({ target: 'https://www.npmjs.com', changeOrigin: true })
+);
+app.use(
   '*',
   proxy({ target: 'https://registry.npmjs.org', changeOrigin: true })
 );
